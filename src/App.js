@@ -3,10 +3,15 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomeScreen from "./screens/HomeScreen";
 import ProductScreen from "./screens/ProductScreen";
-import { Container, Navbar } from "react-bootstrap";
+import { Container, Navbar, Nav, Badge } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
+import { Link } from "react-router-dom";
+import { useContext } from "react";
+import Store from "./Store";
 
 function App() {
+  const { cart } = useContext(Store);
+  console.log(cart);
   return (
     <BrowserRouter>
       <div className="d-flex flex-column site-container">
@@ -16,6 +21,16 @@ function App() {
               <LinkContainer to="/">
                 <Navbar.Brand>Amazona</Navbar.Brand>
               </LinkContainer>
+              <Nav className="me-auto">
+                <Link to="/cart" className="nav-link">
+                  Cart
+                  {cart.length > 0 && (
+                    <Badge pill bg="danger">
+                      {cart.length}
+                    </Badge>
+                  )}
+                </Link>
+              </Nav>
             </Container>
           </Navbar>
         </header>
