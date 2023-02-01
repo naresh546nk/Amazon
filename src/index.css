@@ -23,6 +23,10 @@ main {
 .rating span {
   color: #ffc000;
 }
+.btn-primary {
+  background-color: #f0c040;
+  color: black;
+}
 
 .products {
   display: flex;
@@ -40,4 +44,7 @@ main {
 }
 .product-info {
   padding: 1rem;
+}
+.img-large {
+  max-width: 100%;
 }

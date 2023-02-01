@@ -15,7 +15,7 @@ const Product = ({ product }) => {
         </Link>
         <Rating rating={product.rating} numReviews={product.numReviews} />
         <Card.Text>${product.price}</Card.Text>
-        <Button>Add to Cart</Button>
+        <Button className="btn-primary">Add to Cart</Button>
       </Card.Body>
     </Card>
   );
