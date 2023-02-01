@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { Row, Col } from "react-bootstrap";
 import Product from "../components/Product";
+import LoadingBox from "../components/LoadingBox";
+import MessageBox from "../components/MessageBox";
+import { getError } from "../util";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -10,7 +13,7 @@ const reducer = (state, action) => {
       return { ...state, loading: true };
     case "FEATCH_SUCCESS":
       return { ...state, products: action.payload, loading: false };
-    case "FETCH_FAIL":
+    case "FEATCH_FAIL":
       return {
         ...state,
         loading: false,
@@ -37,7 +40,7 @@ const HomeScreen = () => {
       const result = await axios.get("/api/products");
       dispatch({ type: "FEATCH_SUCCESS", payload: result.data });
     } catch (error) {
-      dispatch({ type: "FEATCH_FAIL", payload: error.message });
+      dispatch({ type: "FEATCH_FAIL", payload: getError(error) });
     }
   };
   useEffect(() => {
@@ -48,9 +51,9 @@ const HomeScreen = () => {
       <h1>Featured Products</h1>
       <div className="products">
         {loading ? (
-          <div>Loading...</div>
+          <LoadingBox />
         ) : error ? (
-          <div>{error}</div>
+          <MessageBox variant="danger">{error}</MessageBox>
         ) : (
           <Row>
             {products.map((product) => (

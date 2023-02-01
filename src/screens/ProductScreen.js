@@ -3,6 +3,9 @@ import { useParams } from "react-router";
 import axios from "axios";
 import { Row, Col, ListGroup, Card, Badge, Button } from "react-bootstrap";
 import Rating from "../components/Rating";
+import LoadingBox from "../components/LoadingBox";
+import MessageBox from "../components/MessageBox";
+import { getError } from "../util";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -10,7 +13,7 @@ const reducer = (state, action) => {
       return { ...state, loading: true };
     case "FEATCH_SUCCESS":
       return { ...state, product: action.payload, loading: false };
-    case "FETCH_FAIL":
+    case "FEATCH_FAIL":
       return {
         ...state,
         loading: false,
@@ -39,7 +42,7 @@ const ProductScreen = () => {
       const result = await axios.get(`/api/products/id/${id}`);
       dispatch({ type: "FEATCH_SUCCESS", payload: result.data });
     } catch (error) {
-      dispatch({ type: "FEATCH_FAIL", payload: error.message });
+      dispatch({ type: "FEATCH_FAIL", payload: getError(error) });
     }
   };
   useEffect(() => {
@@ -47,9 +50,9 @@ const ProductScreen = () => {
   }, [id]);
 
   return loading ? (
-    <div>Loading.. </div>
+    <LoadingBox />
   ) : error ? (
-    <div> {error}</div>
+    <MessageBox variant="danger">{error}</MessageBox>
   ) : (
     <div>
       <Row>
