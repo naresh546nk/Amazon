@@ -11,18 +11,17 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-
-header {
-  background-color: #404040;
-  padding: 1rem;
+.site-container {
+  min-height: 100vh;
 }
 
-header a {
-  color: #ffffff;
-  text-decoration: none;
-}
 main {
-  padding: 1rem;
+  display: flex;
+  flex: 1 0 auto;
+}
+/* Gold color */
+.rating span {
+  color: #ffc000;
 }
 
 .products {
