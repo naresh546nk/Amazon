@@ -7,7 +7,6 @@ import Store from "../Store";
 const Product = ({ product }) => {
   const { dispatch } = useContext(Store);
   const addToCartHandler = () => {
-    console.log("calling cartHandler");
     dispatch({ type: "ADD_TO_CART", payload: product });
   };
   return (
@@ -23,9 +22,9 @@ const Product = ({ product }) => {
         <Card.Text>${product.price}</Card.Text>
         <Button
           onClick={() => addToCartHandler(product)}
-          className="btn-primary"
+          disabled={product.countInStocks === 0}
         >
-          Add to Cart
+          {product.countInStocks > 0 ? "Add to Cart" : "Out of stock"}
         </Button>
       </Card.Body>
     </Card>

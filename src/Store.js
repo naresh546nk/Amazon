@@ -1,19 +1,73 @@
-import { createContext, useReducer } from "react";
+import { createContext, useReducer, useEffect } from "react";
 
 const Store = createContext();
 
-const initialState = {
-  cart: new Map(),
-  numberOfItems: 0,
-  amount: 0,
+const getCartData = () => {
+  const cartItem = localStorage.getItem("cartItem");
+  if (cartItem) {
+    const map = new Map(JSON.parse(cartItem));
+    return map;
+  }
+  return new Map();
 };
+const getNumberOfItems = () => {
+  const numberOfItems = localStorage.getItem("numberOfItems");
+  if (numberOfItems) {
+    return JSON.parse(numberOfItems);
+  }
+  return 0;
+};
+const getAmount = () => {
+  const amount = localStorage.getItem("amount");
+  if (amount) {
+    return JSON.parse(amount);
+  }
+  return 0;
+};
+const initialState = {
+  cart: getCartData(),
+  numberOfItems: getNumberOfItems(),
+  amount: getAmount(),
+};
+
 const reducer = (state, action) => {
   switch (action.type) {
     case "ADD_TO_CART":
-      const product = action.payload;
-      const map = new Map(state.cart);
+      var product = action.payload;
+      var map = new Map(state.cart);
       map.set(product, map.get(product) ? map.get(product) + 1 : 1);
-      return { ...state, cart: map, numberOfItems: state.numberOfItems + 1 };
+      return {
+        ...state,
+        cart: map,
+        numberOfItems: state.numberOfItems + 1,
+        amount: state.amount + product.price,
+      };
+    case "REMOVE_TO_CART":
+      product = action.payload;
+      map = new Map(state.cart);
+      if (map.get(product) > 1) {
+        map.set(product, map.get(product) - 1);
+      } else {
+        map.delete(product);
+      }
+      return {
+        ...state,
+        cart: map,
+        numberOfItems: state.numberOfItems - 1,
+        amount: state.amount - product.price,
+      };
+    case "DELETE_TO_CART":
+      product = action.payload;
+      map = new Map(state.cart);
+      const count = map.get(product);
+      map.delete(product);
+      return {
+        ...state,
+        cart: map,
+        numberOfItems: state.numberOfItems - count,
+        amount: state.amount - product.price * count,
+      };
+
     default:
       return state;
   }
@@ -21,6 +75,11 @@ const reducer = (state, action) => {
 
 export const StoreProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  useEffect(() => {
+    localStorage.setItem("cartItem", JSON.stringify(Array.from(state.cart)));
+    localStorage.setItem("numberOfItems", JSON.stringify(state.numberOfItems));
+    localStorage.setItem("amount", JSON.stringify(state.amount));
+  }, [state.cart]);
   return (
     <Store.Provider value={{ ...state, dispatch }}>{children}</Store.Provider>
   );
