@@ -29,7 +29,8 @@ const ProductScreen = () => {
   const { id } = useParams();
   const { dispatch: ctxDispatch } = useContext(Store);
   const addToCartHandler = () => {
-    ctxDispatch({ type: "ADD_TO_CART", payload: 1 });
+    console.log("calling cartHandler");
+    ctxDispatch({ type: "ADD_TO_CART", payload: product });
   };
 
   const initialState = {
@@ -103,7 +104,10 @@ const ProductScreen = () => {
                 {product.countInStocks > 0 && (
                   <ListGroup.Item>
                     <div className="d-grid">
-                      <Button onClick={addToCartHandler} variant="primary">
+                      <Button
+                        onClick={() => addToCartHandler(product)}
+                        variant="primary"
+                      >
                         Add to Cart
                       </Button>
                     </div>

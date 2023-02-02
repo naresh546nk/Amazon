@@ -3,12 +3,17 @@ import { createContext, useReducer } from "react";
 const Store = createContext();
 
 const initialState = {
-  cart: [],
+  cart: new Map(),
+  numberOfItems: 0,
+  amount: 0,
 };
 const reducer = (state, action) => {
   switch (action.type) {
     case "ADD_TO_CART":
-      return { ...state, cart: [...state.cart, action.payload] };
+      const product = action.payload;
+      const map = new Map(state.cart);
+      map.set(product, map.get(product) ? map.get(product) + 1 : 1);
+      return { ...state, cart: map, numberOfItems: state.numberOfItems + 1 };
     default:
       return state;
   }

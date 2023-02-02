@@ -10,8 +10,9 @@ import { useContext } from "react";
 import Store from "./Store";
 
 function App() {
-  const { cart } = useContext(Store);
-  console.log(cart);
+  const { numberOfItems } = useContext(Store);
+  console.log(useContext(Store));
+
   return (
     <BrowserRouter>
       <div className="d-flex flex-column site-container">
@@ -24,9 +25,9 @@ function App() {
               <Nav className="me-auto">
                 <Link to="/cart" className="nav-link">
                   Cart
-                  {cart.length > 0 && (
+                  {numberOfItems > 0 && (
                     <Badge pill bg="danger">
-                      {cart.length}
+                      {numberOfItems}
                     </Badge>
                   )}
                 </Link>
