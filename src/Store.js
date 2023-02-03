@@ -24,10 +24,19 @@ const getAmount = () => {
   }
   return 0;
 };
+
+const getUserInfo = () => {
+  const user = localStorage.getItem("userInfo");
+  if (user) {
+    return JSON.parse(user);
+  }
+  return null;
+};
 const initialState = {
   cart: getCartData(),
   numberOfItems: getNumberOfItems(),
   amount: getAmount(),
+  userInfo: getUserInfo(),
 };
 
 const reducer = (state, action) => {
@@ -68,6 +77,10 @@ const reducer = (state, action) => {
         amount: state.amount - product.price * count,
       };
 
+    case "USER_SIGNIN":
+      return { ...state, userInfo: action.payload };
+    case "USER_LOGOUT":
+      return { ...state, userInfo: null };
     default:
       return state;
   }
@@ -79,7 +92,8 @@ export const StoreProvider = ({ children }) => {
     localStorage.setItem("cartItem", JSON.stringify(Array.from(state.cart)));
     localStorage.setItem("numberOfItems", JSON.stringify(state.numberOfItems));
     localStorage.setItem("amount", JSON.stringify(state.amount));
-  }, [state.cart]);
+    localStorage.setItem("userInfo", JSON.stringify(state.userInfo));
+  }, [state.cart, state.amount, state.numberOfItems, state.userInfo]);
   return (
     <Store.Provider value={{ ...state, dispatch }}>{children}</Store.Provider>
   );

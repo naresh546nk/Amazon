@@ -1,11 +1,12 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Card, Button } from "react-bootstrap";
 import Rating from "./Rating";
 import Store from "../Store";
 
 const Product = ({ product }) => {
   const { dispatch } = useContext(Store);
+  const navigate = useNavigate();
   const addToCartHandler = () => {
     dispatch({ type: "ADD_TO_CART", payload: product });
   };

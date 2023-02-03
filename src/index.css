@@ -52,3 +52,11 @@ main {
 .img-thumbnail {
   height: 80px;
 }
+.small-container {
+  max-width: 600px;
+}
+
+.dropdown {
+  text-decoration: none;
+  color: aliceblue;
+}

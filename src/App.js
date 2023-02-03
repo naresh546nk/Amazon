@@ -1,5 +1,6 @@
 import "./App.css";
-
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomeScreen from "./screens/HomeScreen";
 import ProductScreen from "./screens/ProductScreen";
@@ -9,14 +10,17 @@ import { Link } from "react-router-dom";
 import { useContext } from "react";
 import Store from "./Store";
 import CartScreen from "./screens/CartScreen";
+import SigninScreen from "./screens/SigninScreen";
+import UserDropdown from "./screens/UserDropdown";
 
 function App() {
-  const { numberOfItems } = useContext(Store);
-  console.log(useContext(Store));
+  const { numberOfItems, userInfo } = useContext(Store);
+  console.log("store: ", useContext(Store));
 
   return (
     <BrowserRouter>
       <div className="d-flex flex-column site-container">
+        <ToastContainer position="bottom-center" limit={10} />
         <header>
           <Navbar bg="dark" variant="dark">
             <Container>
@@ -33,12 +37,15 @@ function App() {
                   )}
                 </Link>
               </Nav>
+
+              <UserDropdown />
             </Container>
           </Navbar>
         </header>
         <main>
           <Container className="mt-3">
             <Routes>
+              <Route path="/signin" element={<SigninScreen />} />
               <Route path="/cart" element={<CartScreen />} />
               <Route path="/product/:id" element={<ProductScreen />} />
               <Route path="/" element={<HomeScreen />} />
