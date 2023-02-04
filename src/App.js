@@ -12,10 +12,19 @@ import Store from "./Store";
 import CartScreen from "./screens/CartScreen";
 import SigninScreen from "./screens/SigninScreen";
 import UserDropdown from "./screens/UserDropdown";
+import ShippingAddressScreen from "./screens/ShippingAddressScreen";
+import RequiredAuth from "./components/RequiredAuth";
+import { useSelector } from "react-redux";
+import ReduxStore from "./ReduxStore";
 
 function App() {
-  const { numberOfItems, userInfo } = useContext(Store);
-  console.log("store: ", useContext(Store));
+  const cart = useSelector((ReduxStore) => ReduxStore.cart);
+  const numberOfItems = cart.cartItem.reduce(
+    (acc, product) => acc + product.orderCount,
+    0
+  );
+
+  console.log(numberOfItems);
 
   return (
     <BrowserRouter>
@@ -45,8 +54,16 @@ function App() {
         <main>
           <Container className="mt-3">
             <Routes>
+              <Route path="/shipping" element={<ShippingAddressScreen />} />
               <Route path="/signin" element={<SigninScreen />} />
-              <Route path="/cart" element={<CartScreen />} />
+              <Route
+                path="/cart"
+                element={
+                  // <RequiredAuth>
+                  <CartScreen />
+                  // </RequiredAuth>
+                }
+              />
               <Route path="/product/:id" element={<ProductScreen />} />
               <Route path="/" element={<HomeScreen />} />
             </Routes>

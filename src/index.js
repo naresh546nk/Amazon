@@ -5,12 +5,19 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { StoreProvider } from "./Store";
+import { HelmetProvider } from "react-helmet-async";
+import { Provider } from "react-redux";
+import ReduxStore from "./ReduxStore";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <StoreProvider>
-      <App />
+      <HelmetProvider>
+        <Provider store={ReduxStore}>
+          <App />
+        </Provider>
+      </HelmetProvider>
     </StoreProvider>
   </React.StrictMode>
 );

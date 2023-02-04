@@ -3,13 +3,19 @@ import { Link, useNavigate } from "react-router-dom";
 import { Card, Button } from "react-bootstrap";
 import Rating from "./Rating";
 import Store from "../Store";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "./features/cartSlice";
+import ReduxStore from "../ReduxStore";
 
 const Product = ({ product }) => {
-  const { dispatch } = useContext(Store);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const cart = useSelector((ReduxStore) => ReduxStore.cart);
+  console.log("cart", cart);
   const addToCartHandler = () => {
-    dispatch({ type: "ADD_TO_CART", payload: product });
+    dispatch(addToCart(product));
   };
+
   return (
     <Card key={product.id}>
       <Link to={`/product/${product.id}`}>

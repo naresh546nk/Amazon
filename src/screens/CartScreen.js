@@ -4,19 +4,34 @@ import { Row, Col, ListGroup, Button, Card } from "react-bootstrap";
 import Store from "../Store";
 import MessageBox from "../components/MessageBox";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addToCart,
+  deleteToCart,
+  removeToCart,
+} from "../components/features/cartSlice";
+import ReduxStore from "../ReduxStore";
 
 const CartScreen = () => {
   const navigate = useNavigate();
-  const { numberOfItems, cart, amount } = useContext(Store);
-  const { dispatch } = useContext(Store);
+  const cart = useSelector((ReduxStore) => ReduxStore.cart);
+  const { numberOfItems, amount } = useSelector(
+    (ReduxStore) => ReduxStore.cart
+  );
+  console.log("cart", cart);
+  //const { dispatch } = useContext(Store);
+
+  const dispatch = useDispatch();
+
   const addToCartHandler = (product) => {
-    dispatch({ type: "ADD_TO_CART", payload: product });
+    dispatch(addToCart(product));
+    localStorage.setItem("cartItem", JSON.stringify(cart.cartItem));
   };
   const removeToCartHandler = (product) => {
-    dispatch({ type: "REMOVE_TO_CART", payload: product });
+    dispatch(removeToCart(product));
   };
   const deleteToCartHandler = (product) => {
-    dispatch({ type: "DELETE_TO_CART", payload: product });
+    dispatch(deleteToCart(product));
   };
   const checkoutHandler = () => {
     navigate("/signin?redirect=/shipping");
@@ -24,6 +39,9 @@ const CartScreen = () => {
 
   return (
     <div>
+      <Helmet>
+        <title>Shoping Cart</title>
+      </Helmet>
       <h1>Shoping Cart</h1>
       <Row>
         <Col md={8}>
@@ -33,7 +51,7 @@ const CartScreen = () => {
             </MessageBox>
           ) : (
             <ListGroup>
-              {Array.from(cart.keys()).map((product) => (
+              {cart.cartItem.map((product) => (
                 <ListGroup.Item key={product.id}>
                   <Row className="align-item-center">
                     <Col md={4}>
@@ -54,11 +72,11 @@ const CartScreen = () => {
                       >
                         <i className="fas fa-minus-circle"></i>
                       </Button>
-                      <span>{cart.get(product)}</span>
+                      <span>{product.orderCount}</span>
                       <Button
                         onClick={() => addToCartHandler(product)}
                         variant="light"
-                        disabled={product.countInStocks === cart.get(product)}
+                        disabled={product.countInStocks === product.orderCount}
                       >
                         <i className="fas fa-plus-circle"></i>
                       </Button>
