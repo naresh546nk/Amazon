@@ -7,6 +7,8 @@ import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 import { getError } from "../util";
 import Store from "../Store";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../components/features/cartSlice";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -27,10 +29,9 @@ const reducer = (state, action) => {
 
 const ProductScreen = () => {
   const { id } = useParams();
-  const { dispatch: ctxDispatch } = useContext(Store);
-  const addToCartHandler = () => {
-    console.log("calling cartHandler");
-    ctxDispatch({ type: "ADD_TO_CART", payload: product });
+  const ctxDispatch = useDispatch();
+  const addToCartHandler = (product) => {
+    ctxDispatch(addToCart(product));
   };
 
   const initialState = {

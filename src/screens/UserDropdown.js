@@ -1,15 +1,15 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Nav } from "react-bootstrap";
 import NavDropdown from "react-bootstrap/NavDropdown";
+import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import ReduxStore from "../ReduxStore";
 import Store from "../Store";
 
-const UserDropdown = () => {
-  const { userInfo, dispatch } = useContext(Store);
-  const signoutHandler = () => {
-    dispatch({ type: "USER_LOGOUT" });
-  };
+const UserDropdown = ({ signoutHandler }) => {
+  const { userInfo } = useContext(Store);
+
   return (
     <div className="dropdown">
       {userInfo ? (

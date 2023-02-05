@@ -8,13 +8,14 @@ import { useNavigate } from "react-router-dom";
 import CheckoutSteps from "../components/CheckoutSteps";
 
 const ShippingAddressScreen = () => {
-  const [fullName, setFullName] = useState("Naresh");
-  const [street, setStreet] = useState("");
-  const [city, setCity] = useState("");
-  const [postalCode, setPostalCode] = useState("");
-  const [country, setCountry] = useState("");
-
+  const { address } = useSelector((ReduxStore) => ReduxStore.user);
   const navigate = useNavigate();
+
+  const [fullName, setFullName] = useState(address?.fullName || "");
+  const [street, setStreet] = useState(address?.street || "");
+  const [city, setCity] = useState(address?.city || "");
+  const [postalCode, setPostalCode] = useState(address?.postalCode || "");
+  const [country, setCountry] = useState(address?.country || "");
 
   const dispatch = useDispatch();
 
@@ -35,7 +36,6 @@ const ShippingAddressScreen = () => {
     console.log("submited the address details");
   };
 
-  const { address } = useSelector((ReduxStore) => ReduxStore.user);
   console.log("Redux store", address);
   return (
     <div>
@@ -49,7 +49,7 @@ const ShippingAddressScreen = () => {
           <FormGroup className="mb-3" controlId="fullNmae">
             <Form.Label>Full Name</Form.Label>
             <Form.Control
-              value={address ? address.fullName : fullName}
+              value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               required
             />
@@ -57,7 +57,7 @@ const ShippingAddressScreen = () => {
           <FormGroup className="mb-3" controlId="street">
             <Form.Label>Street / Village </Form.Label>
             <Form.Control
-              value={address ? address.street : street}
+              value={street}
               onChange={(e) => setStreet(e.target.value)}
               required
             />
@@ -65,7 +65,7 @@ const ShippingAddressScreen = () => {
           <FormGroup className="mb-3" controlId="city">
             <Form.Label>City</Form.Label>
             <Form.Control
-              value={address ? address.city : city}
+              value={city}
               onChange={(e) => setCity(e.target.value)}
               required
             />
@@ -74,7 +74,7 @@ const ShippingAddressScreen = () => {
           <FormGroup className="mb-3" controlId="postalCode">
             <Form.Label>Postal Code</Form.Label>
             <Form.Control
-              value={address ? address.postalCode : postalCode}
+              value={postalCode}
               onChange={(e) => setPostalCode(e.target.value)}
               required
             />
@@ -83,7 +83,7 @@ const ShippingAddressScreen = () => {
           <FormGroup className="mb-3" controlId="country">
             <Form.Label>Country</Form.Label>
             <Form.Control
-              value={address ? address.country : country}
+              value={country}
               onChange={(e) => setCountry(e.target.value)}
               required
             />
